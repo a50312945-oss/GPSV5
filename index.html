@@ -1,0 +1,2110 @@
+<!DOCTYPE html>
+<html class="dark" lang="zh-Hant">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="description" content="GPS 油單輔助系統 - 專為長途行程設計，具備多重防護機制，自動備份，確保穩定記錄"/>
+  <meta name="author" content="GPS Fuel Report Assistant"/>
+  <meta name="version" content="1.0.0"/>
+  
+  <title>GPS 油單輔助系統 v1.0</title>
+  
+  <!-- PWA Icons -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0icGluR3JhZGllbnQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6IzEzZWM1YjtzdG9wLW9wYWNpdHk6MSIgLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMGJhMzQ0O3N0b3Atb3BhY2l0eToxIiAvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSIxMTUiIGZpbGw9IiMxMDIyMTYiLz4KICA8cGF0aCBkPSJNIDI1NiA5NiBDIDE5Ny43IDk2IDE1MCAxNDMuNyAxNTAgMjAyIEMgMTUwIDI4MyAyNTYgNDE2IDI1NiA0MTYgUyAzNjIgMjgzIDM2MiAyMDIgQyAzNjIgMTQzLjcgMzE0LjMgOTYgMjU2IDk2IFoiIGZpbGw9InVybCgjcGluR3JhZGllbnQpIiBzdHJva2U9IiMwYTdhMzMiIHN0cm9rZS13aWR0aD0iNCIvPgogIDxwYXRoIGQ9Ik0gMjMyIDE4MCBMIDIzMiAyNjAgTCAyOTUgMjIwIFoiIGZpbGw9IiMxMDIyMTYiIG9wYWNpdHk9IjAuOSIvPgo8L3N2Zz4="/>
+  <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0icGluR3JhZGllbnQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6IzEzZWM1YjtzdG9wLW9wYWNpdHk6MSIgLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMGJhMzQ0O3N0b3Atb3BhY2l0eToxIiAvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSIxMTUiIGZpbGw9IiMxMDIyMTYiLz4KICA8cGF0aCBkPSJNIDI1NiA5NiBDIDE5Ny43IDk2IDE1MCAxNDMuNyAxNTAgMjAyIEMgMTUwIDI4MyAyNTYgNDE2IDI1NiA0MTYgUyAzNjIgMjgzIDM2MiAyMDIgQyAzNjIgMTQzLjcgMzE0LjMgOTYgMjU2IDk2IFoiIGZpbGw9InVybCgjcGluR3JhZGllbnQpIiBzdHJva2U9IiMwYTdhMzMiIHN0cm9rZS13aWR0aD0iNCIvPgogIDxwYXRoIGQ9Ik0gMjMyIDE4MCBMIDIzMiAyNjAgTCAyOTUgMjIwIFoiIGZpbGw9IiMxMDIyMTYiIG9wYWNpdHk9IjAuOSIvPgo8L3N2Zz4="/>
+  <link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0icGluR3JhZGllbnQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6IzEzZWM1YjtzdG9wLW9wYWNpdHk6MSIgLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMGJhMzQ0O3N0b3Atb3BhY2l0eToxIiAvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSIxMTUiIGZpbGw9IiMxMDIyMTYiLz4KICA8cGF0aCBkPSJNIDI1NiA5NiBDIDE5Ny43IDk2IDE1MCAxNDMuNyAxNTAgMjAyIEMgMTUwIDI4MyAyNTYgNDE2IDI1NiA0MTYgUyAzNjIgMjgzIDM2MiAyMDIgQyAzNjIgMTQzLjcgMzE0LjMgOTYgMjU2IDk2IFoiIGZpbGw9InVybCgjcGluR3JhZGllbnQpIiBzdHJva2U9IiMwYTdhMzMiIHN0cm9rZS13aWR0aD0iNCIvPgogIDxwYXRoIGQ9Ik0gMjMyIDE4MCBMIDIzMiAyNjAgTCAyOTUgMjIwIFoiIGZpbGw9IiMxMDIyMTYiIG9wYWNpdHk9IjAuOSIvPgo8L3N2Zz4="/>
+  <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkdQU+ayueWWrui8lOWKqeezu+e1sSIsCiAgInNob3J0X25hbWUiOiAiR1BT5rK55ZauIiwKICAic3RhcnRfdXJsIjogIi8iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiMxMDIyMTYiLAogICJ0aGVtZV9jb2xvciI6ICIjMTNlYzViIiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M015NXZjbWN2TWpBd01DOXpkbWNpSUhacFpYZENiM2c5SWpBZ01DQTFNVElnTlRFeUlqNEtJQ0E4WkdWbWN6NEtJQ0FnSUR4c2FXNWxZWEpIY21Ga2FXVnVkQ0JwWkQwaWNHbHVSM0poWkdsbGJuUWlJSGd4UFNJd0pTSWdlVEU5SWpBbElpQjRNajBpTUNVaUlIa3lQU0l4TURBbElqNEtJQ0FnSUNBZ1BITjBiM0FnYjJabWMyVjBQU0l3SlNJZ2MzUjViR1U5SW5OMGIzQXRZMjlzYjNJNkl6RXpaV00xWWp0emRHOXdMVzl3WVdOcGRIazZNU0lnTHo0S0lDQWdJQ0FnUEhOMGIzQWdiMlptYzJWMFBTSXhNREFsSWlCemRIbHNaVDBpYzNSdmNDMWpiMnh2Y2pvak1HSmhNelEwTzNOMGIzQXRiM0JoWTJsMGVUb3hJaUF2UGdvZ0lDQWdQQzlzYVc1bFlYSkhjbUZrYVdWdWRENEtJQ0E4TDJSbFpuTStDaUFnUEhKbFkzUWdkMmxrZEdnOUlqVXhNaUlnYUdWcFoyaDBQU0kxTVRJaUlISjRQU0l4TVRVaUlHWnBiR3c5SWlNeE1ESXlNVFlpTHo0S0lDQThjR0YwYUNCa1BTSk5JREkxTmlBNU5pQkRJREU1Tnk0M0lEazJJREUxTUNBeE5ETXVOeUF4TlRBZ01qQXlJRU1nTVRVd0lESTRNeUF5TlRZZ05ERTJJREkxTmlBME1UWWdVeUF6TmpJZ01qZ3pJRE0yTWlBeU1ESWdReUF6TmpJZ01UUXpMamNnTXpFMExqTWdPVFlnTWpVMklEazJJRm9pSUdacGJHdzlJblZ5YkNnamNHbHVSM0poWkdsbGJuUXBJaUJ6ZEhKdmEyVTlJaU13WVRkaE16TWlJSE4wY205clpTMTNhV1IwYUQwaU5DSXZQZ29nSUR4d1lYUm9JR1E5SWswZ01qTXlJREU0TUNCTUlESXpNaUF5TmpBZ1RDQXlPVFVnTWpJd0lGb2lJR1pwYkd3OUlpTXhNREl5TVRZaUlHOXdZV05wZEhrOUlqQXVPU0l2UGdvOEwzTjJaejQ9IiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIsCiAgICAgICJzaXplcyI6ICI1MTJ4NTEyIgogICAgfQogIF0KfQo="/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#13ec5b",
+            "background-light": "#f6f8f6",
+            "background-dark": "#102216",
+            "surface-dark": "#1a2e22",
+          },
+          fontFamily: {
+            "display": ["Plus Jakarta Sans", "Noto Sans TC", "sans-serif"],
+            "body": ["Noto Sans TC", "sans-serif"],
+          },
+          borderRadius: {
+            "DEFAULT": "1rem",
+            "lg": "2rem",
+            "xl": "3rem",
+            "full": "9999px"
+          },
+          animation: {
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'ripple': 'ripple 2s linear infinite',
+            'blink': 'blink 1s ease-in-out infinite',
+          },
+          keyframes: {
+            ripple: {
+              '0%': { transform: 'scale(1)', opacity: '0.4' },
+              '100%': { transform: 'scale(1.5)', opacity: '0' },
+            },
+            blink: {
+              '0%, 100%': { opacity: '1' },
+              '50%': { opacity: '0.3' },
+            }
+          }
+        },
+      },
+    }
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .map-gradient {
+      background: linear-gradient(to bottom, rgba(16,34,22,0) 0%, rgba(16,34,22,0.95) 90%, rgba(16,34,22,1) 100%);
+    }
+    body {
+      min-height: max(884px, 100dvh);
+    }
+    #map {
+      filter: grayscale(100%) invert(85%) hue-rotate(180deg) brightness(80%) contrast(120%);
+    }
+    .hidden { display: none !important; }
+    .tabular-nums {
+      font-feature-settings: 'tnum' on, 'lnum' on;
+    }
+    /* 數字容器 */
+    .distance-display {
+      display: flex;
+      align-items: baseline;
+      gap: 0.25rem;
+      width: 100%;
+      min-height: 3rem;
+    }
+    .distance-display .number {
+      font-weight: 700;
+      white-space: nowrap;
+      line-height: 1;
+    }
+    .distance-display .unit {
+      flex-shrink: 0;
+      font-weight: 500;
+      opacity: 0.7;
+    }
+    /* 防止螢幕休眠 - 使用 CSS 動畫技巧 */
+    @keyframes preventSleep {
+      0% { opacity: 0.999; }
+      100% { opacity: 1; }
+    }
+    .keep-awake {
+      animation: preventSleep 30s infinite;
+    }
+    /* 隱藏的音頻播放器 */
+    #silentAudio {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+    }
+  </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-neutral-900 dark:text-white font-display min-h-screen flex flex-col overflow-x-hidden relative selection:bg-primary selection:text-black keep-awake">
+  
+  <!-- 靜音音頻（防止 iOS 休眠） -->
+  <audio id="silentAudio" loop>
+    <source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=" type="audio/wav">
+  </audio>
+  
+  <!-- 頂部導航列 -->
+  <div class="flex items-center p-4 pt-6 pb-2 justify-between z-20 relative">
+    <div class="flex items-center gap-3">
+      <button onclick="toggleMenu()" class="flex items-center justify-center w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 transition-colors backdrop-blur-md">
+        <span class="material-symbols-outlined text-white text-[20px]">menu</span>
+      </button>
+      <h2 class="text-neutral-900 dark:text-white text-lg font-bold leading-tight tracking-tight">GPS油單輔助系統</h2>
+    </div>
+    <div class="flex items-center gap-2">
+      <!-- 電池狀態 -->
+      <div id="batteryStatus" class="hidden items-center gap-1 bg-surface-dark/50 dark:bg-black/30 px-3 py-1.5 rounded-full border border-white/5 backdrop-blur-sm">
+        <span id="batteryIcon" class="material-symbols-outlined text-primary text-[16px]">battery_full</span>
+        <span id="batteryText" class="text-xs font-bold text-primary tracking-wider">100%</span>
+      </div>
+      
+      <div id="gpsStatus" class="flex items-center gap-1 bg-surface-dark/50 dark:bg-black/30 px-3 py-1.5 rounded-full border border-white/5 backdrop-blur-sm">
+        <span class="material-symbols-outlined text-neutral-500 text-[16px]">signal_cellular_alt</span>
+        <span class="text-xs font-bold text-neutral-500 tracking-wider">待機</span>
+      </div>
+      
+      <div id="connectionStatus" class="flex items-center gap-1 bg-surface-dark/50 dark:bg-black/30 px-3 py-1.5 rounded-full border border-white/5 backdrop-blur-sm">
+        <span id="connectionIcon" class="material-symbols-outlined text-primary text-[16px]">check_circle</span>
+        <span id="connectionText" class="text-xs font-bold text-primary tracking-wider">正常</span>
+      </div>
+      
+      <button onclick="toggleSettings()" class="flex items-center justify-center w-10 h-10 rounded-full bg-transparent hover:bg-white/10 text-neutral-900 dark:text-white transition-colors">
+        <span class="material-symbols-outlined text-[24px]">settings</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 多重防護狀態提示 -->
+  <div id="protectionBanner" class="hidden mx-4 mb-2 p-3 bg-blue-900/30 border border-blue-600/50 rounded-lg">
+    <div class="flex items-center gap-3">
+      <span class="material-symbols-outlined text-blue-400 text-[24px]">shield</span>
+      <div class="flex-1">
+        <p class="text-blue-200 text-sm font-semibold">多重防護已啟動</p>
+        <div class="text-blue-300/80 text-xs mt-1 space-y-0.5">
+          <div id="protection-wakeLock" class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-neutral-500"></span>
+            <span>Wake Lock: 檢查中...</span>
+          </div>
+          <div id="protection-audio" class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-neutral-500"></span>
+            <span>音頻保活: 檢查中...</span>
+          </div>
+          <div id="protection-localStorage" class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-neutral-500"></span>
+            <span>自動儲存: 檢查中...</span>
+          </div>
+        </div>
+      </div>
+      <button onclick="toggleProtectionBanner()" class="text-blue-200 hover:text-white">
+        <span class="material-symbols-outlined text-[20px]">expand_less</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 警告橫幅 -->
+  <div id="warningBanner" class="hidden mx-4 mb-2 p-3 bg-yellow-900/30 border border-yellow-600/50 rounded-lg flex items-center gap-3">
+    <span class="material-symbols-outlined text-yellow-400 text-[24px] animate-pulse">warning</span>
+    <div class="flex-1">
+      <p class="text-yellow-200 text-sm font-semibold">GPS 訊號中斷</p>
+      <p class="text-yellow-300/80 text-xs">資料已備份，恢復訊號後會繼續追蹤</p>
+    </div>
+    <button onclick="dismissWarning()" class="text-yellow-200 hover:text-white">
+      <span class="material-symbols-outlined text-[20px]">close</span>
+    </button>
+  </div>
+
+  <!-- 側邊選單 -->
+  <div id="sideMenu" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" onclick="toggleMenu()">
+    <div class="w-80 h-full bg-surface-dark p-6 overflow-y-auto" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-xl font-bold text-white">選單</h3>
+        <button onclick="toggleMenu()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10">
+          <span class="material-symbols-outlined text-white">close</span>
+        </button>
+      </div>
+      
+      <!-- 防護系統狀態 -->
+      <div class="mb-6 p-4 bg-background-dark rounded-lg border border-white/10">
+        <h4 class="text-sm font-bold text-neutral-400 mb-3 flex items-center gap-2">
+          <span class="material-symbols-outlined text-[18px]">security</span>
+          防護系統
+        </h4>
+        <div class="space-y-2 text-xs">
+          <div id="status-wakeLock" class="flex justify-between items-center">
+            <span class="text-neutral-400">Wake Lock：</span>
+            <span class="text-white font-semibold">檢查中</span>
+          </div>
+          <div id="status-audio" class="flex justify-between items-center">
+            <span class="text-neutral-400">音頻保活：</span>
+            <span class="text-white font-semibold">檢查中</span>
+          </div>
+          <div id="status-autoSave" class="flex justify-between items-center">
+            <span class="text-neutral-400">自動儲存：</span>
+            <span class="text-white font-semibold">每 10 秒</span>
+          </div>
+          <div id="status-battery" class="flex justify-between items-center">
+            <span class="text-neutral-400">電池電量：</span>
+            <span class="text-white font-semibold">—</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 系統狀態 -->
+      <div class="mb-6 p-4 bg-background-dark rounded-lg border border-white/10">
+        <h4 class="text-sm font-bold text-neutral-400 mb-3">運行統計</h4>
+        <div class="space-y-2 text-xs">
+          <div class="flex justify-between">
+            <span class="text-neutral-400">定位點數：</span>
+            <span id="pointCount" class="text-white font-semibold">0</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-neutral-400">最後更新：</span>
+            <span id="lastUpdateTime" class="text-white font-semibold">—</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-neutral-400">GPS 重連次數：</span>
+            <span id="reconnectCount" class="text-white font-semibold">0</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-neutral-400">背景喚醒：</span>
+            <span id="wakeupCount" class="text-white font-semibold">0</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-neutral-400">自動儲存：</span>
+            <span id="autoSaveCount" class="text-white font-semibold">0 次</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-neutral-400">運行時長：</span>
+            <span id="runningTime" class="text-white font-semibold">00:00:00</span>
+          </div>
+        </div>
+      </div>
+      
+      <nav class="space-y-2">
+        <button onclick="showView('recording'); toggleMenu()" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 text-white text-left transition-colors">
+          <span class="material-symbols-outlined">play_circle</span>
+          <span>開始記錄</span>
+        </button>
+        <button onclick="showView('history'); toggleMenu()" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 text-white text-left transition-colors">
+          <span class="material-symbols-outlined">history</span>
+          <span>歷史記錄</span>
+        </button>
+        <button onclick="showView('settings'); toggleMenu()" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 text-white text-left transition-colors">
+          <span class="material-symbols-outlined">settings</span>
+          <span>設定</span>
+        </button>
+        <button onclick="forceBackup()" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 text-white text-left transition-colors">
+          <span class="material-symbols-outlined">backup</span>
+          <span>立即備份</span>
+        </button>
+        <button onclick="exportXLSX()" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white/10 text-white text-left transition-colors">
+          <span class="material-symbols-outlined">download</span>
+          <span>匯出 Excel</span>
+        </button>
+      </nav>
+    </div>
+  </div>
+
+  <!-- 主要內容區 -->
+  <div class="flex-1 flex flex-col relative w-full max-w-md mx-auto h-full">
+    
+    <!-- 記錄畫面 -->
+    <div id="viewRecording" class="flex-1 flex flex-col">
+      <!-- 地圖 -->
+      <div class="relative w-full h-[45vh] shrink-0">
+        <div class="absolute inset-0 w-full h-full">
+          <div id="map" class="w-full h-full opacity-80 dark:opacity-60"></div>
+          <div class="absolute inset-0 map-gradient"></div>
+        </div>
+        
+        <div class="absolute top-4 left-4 flex flex-col gap-2">
+          <!-- 路徑資訊卡片 -->
+          <div id="pathInfoCard" class="hidden bg-surface-dark/90 border border-white/10 rounded-xl px-3 py-2 shadow-lg backdrop-blur-md">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary text-[18px]">route</span>
+              <div>
+                <p class="text-white text-xs font-semibold">路徑點數</p>
+                <p id="pathPointCount" class="text-primary text-sm font-bold">0</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="absolute bottom-4 left-0 right-0 px-4 flex justify-center">
+          <div class="flex gap-3 flex-wrap justify-center">
+            <div id="trackingBadge" class="hidden flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-dark border border-white/10 pl-3 pr-4 shadow-lg backdrop-blur-md">
+              <span class="material-symbols-outlined text-primary text-[18px]">my_location</span>
+              <p class="text-white text-xs font-bold uppercase tracking-wider">多重防護追蹤中</p>
+            </div>
+            <div id="idleBadge" class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-dark border border-white/10 pl-3 pr-4 shadow-lg backdrop-blur-md">
+              <span class="material-symbols-outlined text-neutral-400 text-[18px]">pause_circle</span>
+              <p class="text-neutral-400 text-xs font-bold uppercase tracking-wider">待機中</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 數據顯示 -->
+      <div class="flex flex-col items-center justify-start flex-1 px-6 -mt-2 z-10 overflow-y-auto">
+        <div class="flex flex-col items-center mb-6 mt-4">
+          <span class="text-neutral-500 dark:text-neutral-400 text-xs font-bold uppercase tracking-[0.2em] mb-1">行程</span>
+          <h1 id="tripName" class="text-neutral-900 dark:text-white text-2xl font-bold leading-none tracking-tight text-center">
+            等待開始
+          </h1>
+        </div>
+
+        <div class="w-full grid grid-cols-2 gap-4 mb-6">
+          <div class="flex flex-col gap-1 rounded-2xl p-5 bg-white dark:bg-surface-dark border border-neutral-200 dark:border-white/5 shadow-sm">
+            <div class="flex items-center gap-2 mb-1">
+              <span class="material-symbols-outlined text-primary text-[20px]">route</span>
+              <p class="text-neutral-500 dark:text-neutral-400 text-xs font-bold uppercase tracking-wider">本趟里程</p>
+            </div>
+            <div class="distance-display text-neutral-900 dark:text-white tabular-nums">
+              <span id="tripDist" class="number">0.000</span>
+              <span class="unit text-neutral-500 dark:text-neutral-400">km</span>
+            </div>
+          </div>
+          
+          <div class="flex flex-col gap-1 rounded-2xl p-5 bg-white dark:bg-surface-dark border border-neutral-200 dark:border-white/5 shadow-sm">
+            <div class="flex items-center gap-2 mb-1">
+              <span class="material-symbols-outlined text-primary text-[20px]">speed</span>
+              <p class="text-neutral-500 dark:text-neutral-400 text-xs font-bold uppercase tracking-wider">累積里程</p>
+            </div>
+            <div class="distance-display text-neutral-900 dark:text-white tabular-nums">
+              <span id="currentOdo" class="number">—</span>
+              <span class="unit text-neutral-500 dark:text-neutral-400">km</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-6 text-neutral-500 dark:text-neutral-400 mb-6">
+          <div class="flex flex-col items-center">
+            <span class="text-[10px] uppercase font-bold tracking-widest mb-0.5">精確度</span>
+            <span id="acc" class="text-sm font-semibold text-white">—</span>
+          </div>
+          <div class="w-px h-6 bg-white/10"></div>
+          <div class="flex flex-col items-center">
+            <span class="text-[10px] uppercase font-bold tracking-widest mb-0.5">速度</span>
+            <span id="spd" class="text-sm font-semibold text-white">—</span>
+          </div>
+          <div class="w-px h-6 bg-white/10"></div>
+          <div class="flex flex-col items-center">
+            <span class="text-[10px] uppercase font-bold tracking-widest mb-0.5">更新</span>
+            <span id="ts" class="text-sm font-semibold text-white">—</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 控制區 -->
+      <div class="relative w-full pb-8 pt-4 px-6 flex flex-col items-center justify-end shrink-0 z-20">
+        <div id="ripple1" class="hidden absolute bottom-[5.5rem] left-1/2 -translate-x-1/2 w-24 h-24 rounded-full bg-primary/20 animate-ripple z-0 pointer-events-none"></div>
+        <div id="ripple2" class="hidden absolute bottom-[5.5rem] left-1/2 -translate-x-1/2 w-24 h-24 rounded-full bg-primary/10 animate-ripple z-0 pointer-events-none" style="animation-delay: 1s;"></div>
+        
+        <div class="flex items-center gap-6 relative z-10">
+          <button onclick="showView('history')" class="group flex items-center justify-center w-14 h-14 rounded-full bg-surface-dark border border-white/10 text-white shadow-lg active:scale-95 transition-transform">
+            <span class="material-symbols-outlined text-[28px] group-hover:text-primary transition-colors">history</span>
+          </button>
+          
+          <button id="mainBtn" onclick="handleMainButton()" class="relative flex items-center justify-center w-24 h-24 rounded-full bg-primary text-black shadow-xl shadow-primary/20 active:scale-95 transition-all duration-200 group">
+            <div class="flex flex-col items-center gap-1">
+              <span id="mainBtnIcon" class="material-symbols-outlined text-[32px]">play_circle</span>
+              <span id="mainBtnText" class="text-[10px] font-bold uppercase tracking-wider">開始</span>
+            </div>
+          </button>
+          
+          <button onclick="showView('settings')" class="group flex items-center justify-center w-14 h-14 rounded-full bg-surface-dark border border-white/10 text-white shadow-lg active:scale-95 transition-transform">
+            <span class="material-symbols-outlined text-[28px] group-hover:text-primary transition-colors">settings</span>
+          </button>
+        </div>
+        
+        <p id="mainBtnHint" class="text-neutral-500 text-xs mt-6 font-medium">點擊開始記錄行程</p>
+      </div>
+    </div>
+
+    <!-- 歷史記錄畫面 -->
+    <div id="viewHistory" class="hidden flex-1 flex flex-col p-6 overflow-y-auto">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h2 class="text-2xl font-bold text-white">歷史記錄</h2>
+          <p id="tripCount" class="text-sm text-neutral-400 mt-1">共 0 筆</p>
+        </div>
+        <button onclick="exportXLSX()" class="flex items-center gap-2 px-4 py-2 bg-primary text-black rounded-full font-semibold text-sm hover:bg-primary/90 transition-colors">
+          <span class="material-symbols-outlined text-[20px]">download</span>
+          匯出
+        </button>
+      </div>
+      
+      <div id="tripList" class="space-y-3">
+        <div class="text-center py-12 text-neutral-500">
+          <span class="material-symbols-outlined text-[48px] opacity-30">folder_open</span>
+          <p class="mt-2">尚無行程記錄</p>
+          <p class="text-xs mt-1">開始記錄後會顯示在這裡</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 設定畫面 -->
+    <div id="viewSettings" class="hidden flex-1 flex flex-col p-6 overflow-y-auto">
+      <h2 class="text-2xl font-bold text-white mb-6">設定</h2>
+      
+      <div class="space-y-4 mb-6">
+        <div class="bg-surface-dark rounded-2xl p-4 border border-white/5">
+          <label class="block text-sm font-semibold text-neutral-400 mb-2">車牌號碼</label>
+          <input id="plate" type="text" placeholder="例：ABC-1234" class="w-full bg-background-dark border border-white/10 rounded-lg px-4 py-3 text-white placeholder-neutral-500 focus:outline-none focus:border-primary transition-colors"/>
+        </div>
+        
+        <div class="bg-surface-dark rounded-2xl p-4 border border-white/5">
+          <label class="block text-sm font-semibold text-neutral-400 mb-2">駕駛人</label>
+          <input id="driver" type="text" placeholder="例：王小明" class="w-full bg-background-dark border border-white/10 rounded-lg px-4 py-3 text-white placeholder-neutral-500 focus:outline-none focus:border-primary transition-colors"/>
+        </div>
+        
+        <div class="bg-surface-dark rounded-2xl p-4 border border-white/5">
+          <label class="block text-sm font-semibold text-neutral-400 mb-2">申請人姓名</label>
+          <input id="personName" type="text" placeholder="例：黃士源" class="w-full bg-background-dark border border-white/10 rounded-lg px-4 py-3 text-white placeholder-neutral-500 focus:outline-none focus:border-primary transition-colors"/>
+        </div>
+        
+        <div class="bg-surface-dark rounded-2xl p-4 border border-white/5">
+          <label class="block text-sm font-semibold text-neutral-400 mb-2">起始里程數（km）</label>
+          <input id="startOdo" type="number" inputmode="decimal" step="0.1" placeholder="例：12035.6" class="w-full bg-background-dark border border-white/10 rounded-lg px-4 py-3 text-white placeholder-neutral-500 focus:outline-none focus:border-primary transition-colors"/>
+        </div>
+        
+        <!-- 里程校正係數（隱藏） -->
+        <div class="hidden">
+          <input id="distCoef" type="number" value="1.10"/>
+          <input id="enablePreciseCalc" type="checkbox"/>
+        </div>
+        
+        <!-- 精算選項（隱藏） -->
+      </div>
+
+      <!-- 防護模式設定 -->
+      <div class="bg-primary/10 border border-primary/30 rounded-2xl p-4 mb-6">
+        <h3 class="text-sm font-bold text-primary mb-3 flex items-center gap-2">
+          <span class="material-symbols-outlined text-[20px]">shield</span>
+          終極防護模式
+        </h3>
+        <p class="text-xs text-neutral-300 mb-4">
+          啟用多重技術確保長途行程穩定運行：<br/>
+          • Wake Lock 防休眠<br/>
+          • 靜音音頻保活<br/>
+          • 自動備份（每 10 秒）<br/>
+          • GPS 健康監控<br/>
+          • 斷線自動重連
+        </p>
+        <div class="flex items-center justify-between">
+          <span class="text-sm font-semibold text-white">啟用終極防護</span>
+          <div class="relative">
+            <input type="checkbox" id="ultimateMode" class="sr-only peer" checked onchange="toggleUltimateMode()">
+            <div class="w-11 h-6 bg-neutral-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-neutral-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <button onclick="testGPS()" class="w-full flex items-center justify-center gap-2 px-6 py-4 bg-primary/20 border border-primary text-primary rounded-2xl font-semibold hover:bg-primary/30 transition-colors">
+          <span class="material-symbols-outlined">gps_fixed</span>
+          測試 GPS 連線
+        </button>
+        
+        <button onclick="testProtections()" class="w-full flex items-center justify-center gap-2 px-6 py-4 bg-blue-600/20 border border-blue-600 text-blue-400 rounded-2xl font-semibold hover:bg-blue-600/30 transition-colors">
+          <span class="material-symbols-outlined">verified_user</span>
+          測試防護系統
+        </button>
+        
+        <button onclick="resetAll()" class="w-full flex items-center justify-center gap-2 px-6 py-4 bg-red-600 text-white rounded-2xl font-semibold hover:bg-red-700 transition-colors">
+          <span class="material-symbols-outlined">delete</span>
+          清除所有記錄
+        </button>
+        
+        <button onclick="showView('recording')" class="w-full flex items-center justify-center gap-2 px-6 py-4 bg-surface-dark border border-white/10 text-white rounded-2xl font-semibold hover:bg-white/5 transition-colors">
+          <span class="material-symbols-outlined">arrow_back</span>
+          返回記錄
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="fixed left-1/2 -translate-x-1/2 bottom-24 bg-black/90 text-white px-6 py-3 rounded-full text-sm font-medium shadow-lg backdrop-blur-md opacity-0 transition-opacity duration-300 pointer-events-none z-50"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script>
+    // 終極版 GPS 系統 - 多重防護機制
+    
+    const $ = (id) => document.getElementById(id);
+    
+    function toast(msg, duration = 2000) {
+      const t = $('toast');
+      t.textContent = msg;
+      t.style.opacity = '1';
+      setTimeout(() => { t.style.opacity = '0'; }, duration);
+    }
+    
+    function showCoefInfo() {
+      const info = `📊 里程校正係數說明
+
+為什麼需要？
+GPS 計算的是「直線距離」，但車子實際走的是「道路距離」，道路有彎道、迴轉，所以會少算。
+
+如何設定？
+1. 跑一趟已知距離的路線（例如通勤）
+2. 比較車子儀表板和 GPS 顯示
+3. 計算：係數 = 儀表板 ÷ GPS
+4. 輸入到這裡
+
+範例：
+• 儀表板：30.0 km
+• GPS 顯示：27.0 km
+• 係數：30 ÷ 27 = 1.11
+
+建議值：
+• 高速公路：1.05
+• 一般道路：1.10（預設）
+• 山路彎道：1.15
+
+預設 1.10 可補償約 10% 誤差。`;
+      
+      alert(info);
+    }
+    
+    async function calculateRoadDistance(startLat, startLng, endLat, endLng) {
+      // 使用 OSRM API 計算實際道路距離
+      const start = `${startLng},${startLat}`;
+      const end = `${endLng},${endLat}`;
+      const url = `https://router.project-osrm.org/route/v1/driving/${start};${end}?overview=false`;
+      
+      try {
+        const response = await fetch(url, { timeout: 10000 });
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+        
+        const data = await response.json();
+        if (data.code !== 'Ok' || !data.routes || !data.routes[0]) {
+          throw new Error('路線計算失敗');
+        }
+        
+        const distanceMeters = data.routes[0].distance;
+        return distanceMeters / 1000; // 轉換為公里
+      } catch (err) {
+        console.error('OSRM API 錯誤：', err);
+        throw err;
+      }
+    }
+    
+    function fmt(n, d = 6) {
+      return (n == null || Number.isNaN(n)) ? "—" : Number(n).toFixed(d);
+    }
+    
+    function kph(mps) {
+      return (mps == null || Number.isNaN(mps)) ? null : mps * 3.6;
+    }
+    
+    function tsFmt(d) {
+      const p = (x) => String(x).padStart(2, '0');
+      return `${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+    }
+    
+    function hav(a, b) {
+      const R = 6371000, toRad = x => x * Math.PI / 180;
+      const dLat = toRad(b.lat - a.lat), dLng = toRad(b.lng - a.lng);
+      const s1 = Math.sin(dLat / 2), s2 = Math.sin(dLng / 2);
+      const aa = s1 * s1 + Math.cos(toRad(a.lat)) * Math.cos(toRad(b.lat)) * s2 * s2;
+      return 2 * R * Math.atan2(Math.sqrt(aa), Math.sqrt(1 - aa));
+    }
+    
+    function tripTitle(a, b) {
+      a = (a || '').trim();
+      b = (b || '').trim();
+      return (a && b) ? `${a} → ${b}` : (a || b || '');
+    }
+    
+    function requireNonEmpty(promptText, defVal) {
+      while (true) {
+        let v = window.prompt(promptText, defVal) || "";
+        v = v.trim();
+        if (v !== "") return v;
+        if (!window.confirm("名稱不能空白，是否重新輸入？")) return null;
+      }
+    }
+
+    // ========== 狀態管理 ==========
+    let watchId = null, last = null, tripActive = false, tripDist = 0, tripStartPos = null;
+    let tripStartTime = null, tripStartName = "", tripEndName = "";
+    let trips = [];
+    let map, marker, circle, track;
+    
+    // ========== 終極防護系統 ==========
+    let ultimateMode = true;
+    let lastGPSUpdate = Date.now();
+    let reconnectCount = 0;
+    let totalPoints = 0;
+    let wakeupCount = 0;
+    let autoSaveCount = 0;
+    let tripStartRealTime = null;
+    
+    // 多重防護組件
+    let wakeLockSentinel = null;
+    let silentAudio = null;
+    let healthCheckInterval = null;
+    let autoSaveInterval = null;
+    let batteryMonitor = null;
+    let runningTimeInterval = null;
+    
+    // 防護狀態
+    const protectionStatus = {
+      wakeLock: false,
+      audio: false,
+      autoSave: false,
+      battery: 100
+    };
+
+    // ========== 1. Wake Lock 防休眠 ==========
+    async function startWakeLock() {
+      if (!('wakeLock' in navigator)) {
+        console.log('Wake Lock 不支援');
+        return false;
+      }
+      
+      try {
+        wakeLockSentinel = await navigator.wakeLock.request('screen');
+        protectionStatus.wakeLock = true;
+        updateProtectionUI('wakeLock', true);
+        console.log('✓ Wake Lock 已啟動');
+        
+        wakeLockSentinel.addEventListener('release', () => {
+          protectionStatus.wakeLock = false;
+          updateProtectionUI('wakeLock', false);
+          console.log('Wake Lock 已釋放，嘗試重新請求...');
+          if (ultimateMode && tripActive) {
+            setTimeout(() => startWakeLock(), 1000);
+          }
+        });
+        
+        return true;
+      } catch (err) {
+        console.error('Wake Lock 失敗：', err);
+        updateProtectionUI('wakeLock', false);
+        return false;
+      }
+    }
+    
+    async function stopWakeLock() {
+      if (wakeLockSentinel) {
+        try {
+          await wakeLockSentinel.release();
+          wakeLockSentinel = null;
+          protectionStatus.wakeLock = false;
+          updateProtectionUI('wakeLock', false);
+        } catch (err) {
+          console.error('釋放 Wake Lock 失敗：', err);
+        }
+      }
+    }
+
+    // ========== 2. 靜音音頻保活（iOS 專用） ==========
+    function startAudioKeepAlive() {
+      silentAudio = $('silentAudio');
+      if (!silentAudio) {
+        console.log('音頻元素不存在');
+        return false;
+      }
+      
+      try {
+        silentAudio.play().then(() => {
+          protectionStatus.audio = true;
+          updateProtectionUI('audio', true);
+          console.log('✓ 靜音音頻已啟動');
+        }).catch(err => {
+          console.error('音頻播放失敗：', err);
+          updateProtectionUI('audio', false);
+          
+          // iOS 需要用戶互動才能播放，監聽下一次點擊
+          document.addEventListener('click', function retryAudio() {
+            silentAudio.play().then(() => {
+              protectionStatus.audio = true;
+              updateProtectionUI('audio', true);
+              console.log('✓ 靜音音頻已啟動（用戶互動後）');
+              document.removeEventListener('click', retryAudio);
+            });
+          }, { once: true });
+        });
+        return true;
+      } catch (err) {
+        console.error('音頻啟動失敗：', err);
+        return false;
+      }
+    }
+    
+    function stopAudioKeepAlive() {
+      if (silentAudio) {
+        silentAudio.pause();
+        protectionStatus.audio = false;
+        updateProtectionUI('audio', false);
+      }
+    }
+
+    // ========== 3. 自動備份系統 ==========
+    function startAutoSave() {
+      if (autoSaveInterval) clearInterval(autoSaveInterval);
+      
+      autoSaveInterval = setInterval(() => {
+        if (tripActive) {
+          saveCurrentTrip();
+          autoSaveCount++;
+          updateStats();
+          console.log(`自動備份 #${autoSaveCount}`);
+        }
+      }, 10000); // 每 10 秒備份
+      
+      protectionStatus.autoSave = true;
+      updateProtectionUI('autoSave', true);
+      console.log('✓ 自動備份已啟動（每 10 秒）');
+    }
+    
+    function stopAutoSave() {
+      if (autoSaveInterval) {
+        clearInterval(autoSaveInterval);
+        autoSaveInterval = null;
+        protectionStatus.autoSave = false;
+        updateProtectionUI('autoSave', false);
+      }
+    }
+    
+    function saveCurrentTrip() {
+      if (!tripActive) return;
+      
+      const currentTrip = {
+        startName: tripStartName,
+        endName: tripEndName,
+        start: tripStartTime,
+        km: tripDist / 1000,
+        points: totalPoints,
+        reconnects: reconnectCount,
+        timestamp: Date.now()
+      };
+      
+      try {
+        localStorage.setItem('gps_current_trip_backup', JSON.stringify(currentTrip));
+        return true;
+      } catch (e) {
+        console.error('自動備份失敗：', e);
+        return false;
+      }
+    }
+    
+    function loadCurrentTripBackup() {
+      try {
+        const backup = localStorage.getItem('gps_current_trip_backup');
+        if (backup) {
+          const trip = JSON.parse(backup);
+          // 檢查是否在 1 小時內
+          if (Date.now() - trip.timestamp < 3600000) {
+            return trip;
+          }
+        }
+      } catch (e) {
+        console.error('讀取備份失敗：', e);
+      }
+      return null;
+    }
+    
+    function clearCurrentTripBackup() {
+      localStorage.removeItem('gps_current_trip_backup');
+    }
+
+    // ========== 4. GPS 健康檢查 ==========
+    function startHealthCheck() {
+      if (healthCheckInterval) clearInterval(healthCheckInterval);
+      
+      healthCheckInterval = setInterval(() => {
+        if (!tripActive) {
+          stopHealthCheck();
+          return;
+        }
+        
+        const timeSinceLastUpdate = Date.now() - lastGPSUpdate;
+        
+        if (timeSinceLastUpdate > 15000) {
+          updateConnectionStatus('error', '中斷');
+          showWarning();
+          
+          if (reconnectCount < 999 && ultimateMode) {
+            reconnectGPS();
+          }
+        } else if (timeSinceLastUpdate > 8000) {
+          updateConnectionStatus('warning', '不穩');
+        } else {
+          updateConnectionStatus('ok', '正常');
+          hideWarning();
+        }
+      }, 5000);
+    }
+    
+    function stopHealthCheck() {
+      if (healthCheckInterval) {
+        clearInterval(healthCheckInterval);
+        healthCheckInterval = null;
+      }
+    }
+
+    // ========== 5. 電池監控 ==========
+    async function startBatteryMonitor() {
+      if (!('getBattery' in navigator)) {
+        console.log('電池 API 不支援');
+        return;
+      }
+      
+      try {
+        const battery = await navigator.getBattery();
+        
+        function updateBatteryUI() {
+          const level = Math.round(battery.level * 100);
+          const charging = battery.charging;
+          
+          protectionStatus.battery = level;
+          
+          const batteryEl = $('batteryStatus');
+          const batteryIcon = $('batteryIcon');
+          const batteryText = $('batteryText');
+          
+          if (level <= 20 && !charging) {
+            batteryIcon.textContent = 'battery_alert';
+            batteryIcon.className = 'material-symbols-outlined text-red-500 text-[16px]';
+            batteryText.className = 'text-xs font-bold text-red-500 tracking-wider';
+          } else if (charging) {
+            batteryIcon.textContent = 'battery_charging_full';
+            batteryIcon.className = 'material-symbols-outlined text-primary text-[16px]';
+            batteryText.className = 'text-xs font-bold text-primary tracking-wider';
+          } else {
+            batteryIcon.textContent = level > 50 ? 'battery_full' : 'battery_3_bar';
+            batteryIcon.className = 'material-symbols-outlined text-primary text-[16px]';
+            batteryText.className = 'text-xs font-bold text-primary tracking-wider';
+          }
+          
+          batteryText.textContent = `${level}%`;
+          batteryEl.classList.remove('hidden');
+          batteryEl.classList.add('flex');
+          
+          // 更新側邊欄
+          const statusBattery = $('status-battery');
+          if (statusBattery) {
+            const statusText = statusBattery.querySelector('.text-white');
+            if (statusText) {
+              statusText.textContent = charging ? `${level}% (充電中)` : `${level}%`;
+            }
+          }
+        }
+        
+        battery.addEventListener('levelchange', updateBatteryUI);
+        battery.addEventListener('chargingchange', updateBatteryUI);
+        updateBatteryUI();
+        
+        console.log('✓ 電池監控已啟動');
+      } catch (err) {
+        console.error('電池監控失敗：', err);
+      }
+    }
+
+    // ========== 6. 運行時長計時器 ==========
+    function startRunningTimer() {
+      if (runningTimeInterval) clearInterval(runningTimeInterval);
+      
+      tripStartRealTime = Date.now();
+      
+      runningTimeInterval = setInterval(() => {
+        if (!tripActive) {
+          stopRunningTimer();
+          return;
+        }
+        
+        const elapsed = Date.now() - tripStartRealTime;
+        const hours = Math.floor(elapsed / 3600000);
+        const minutes = Math.floor((elapsed % 3600000) / 60000);
+        const seconds = Math.floor((elapsed % 60000) / 1000);
+        
+        const timeStr = `${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
+        $('runningTime').textContent = timeStr;
+      }, 1000);
+    }
+    
+    function stopRunningTimer() {
+      if (runningTimeInterval) {
+        clearInterval(runningTimeInterval);
+        runningTimeInterval = null;
+      }
+    }
+
+    // ========== 頁面可見性處理 ==========
+    document.addEventListener('visibilitychange', async () => {
+      if (document.visibilityState === 'visible' && tripActive && ultimateMode) {
+        wakeupCount++;
+        updateStats();
+        console.log('頁面重新可見，執行完整檢查...');
+        
+        // 檢查並恢復所有防護
+        if (!protectionStatus.wakeLock) {
+          await startWakeLock();
+        }
+        
+        if (!protectionStatus.audio && silentAudio) {
+          startAudioKeepAlive();
+        }
+        
+        // 檢查 GPS
+        const timeSinceLastUpdate = Date.now() - lastGPSUpdate;
+        if (timeSinceLastUpdate > 10000) {
+          console.log('GPS 可能中斷，嘗試重新連線...');
+          reconnectGPS();
+        }
+        
+        toast('✓ 系統已恢復', 2000);
+      }
+    });
+
+    // ========== GPS 重新連線 ==========
+    function reconnectGPS() {
+      if (!tripActive || !ultimateMode) return;
+      
+      reconnectCount++;
+      updateStats();
+      
+      console.log(`GPS 重新連線 #${reconnectCount}...`);
+      toast(`正在重新連線 GPS...`, 2000);
+      
+      if (watchId !== null) {
+        navigator.geolocation.clearWatch(watchId);
+        watchId = null;
+      }
+      
+      setTimeout(() => {
+        startWatch();
+      }, 1000);
+    }
+
+    // ========== 更新防護 UI ==========
+    function updateProtectionUI(protection, active) {
+      const indicators = {
+        wakeLock: {
+          banner: 'protection-wakeLock',
+          sidebar: 'status-wakeLock',
+          name: 'Wake Lock',
+          activeText: '✓ 已啟動',
+          inactiveText: '✗ 未啟動'
+        },
+        audio: {
+          banner: 'protection-audio',
+          sidebar: 'status-audio',
+          name: '音頻保活',
+          activeText: '✓ 運行中',
+          inactiveText: '✗ 未運行'
+        },
+        autoSave: {
+          banner: 'protection-localStorage',
+          sidebar: 'status-autoSave',
+          name: '自動儲存',
+          activeText: '✓ 每 10 秒',
+          inactiveText: '✗ 未啟動'
+        }
+      };
+      
+      const config = indicators[protection];
+      if (!config) return;
+      
+      // 更新橫幅
+      const bannerEl = $(config.banner);
+      if (bannerEl) {
+        const dot = bannerEl.querySelector('.w-2');
+        const text = bannerEl.querySelector('span:last-child');
+        if (dot) {
+          dot.className = `w-2 h-2 rounded-full ${active ? 'bg-primary' : 'bg-red-500'}`;
+        }
+        if (text) {
+          text.textContent = `${config.name}: ${active ? config.activeText : config.inactiveText}`;
+        }
+      }
+      
+      // 更新側邊欄
+      const sidebarEl = $(config.sidebar);
+      if (sidebarEl) {
+        const statusText = sidebarEl.querySelector('.text-white');
+        if (statusText) {
+          statusText.textContent = active ? config.activeText : config.inactiveText;
+          statusText.className = `text-xs font-semibold ${active ? 'text-primary' : 'text-red-500'}`;
+        }
+      }
+    }
+
+    // ========== UI 輔助函數 ==========
+    function showView(view) {
+      const views = ['viewRecording', 'viewHistory', 'viewSettings'];
+      views.forEach(v => {
+        $(v).classList.toggle('hidden', v !== 'view' + view.charAt(0).toUpperCase() + view.slice(1));
+      });
+      
+      if (view === 'history') {
+        renderTrips();
+      }
+    }
+    
+    function toggleMenu() {
+      $('sideMenu').classList.toggle('hidden');
+      updateStats();
+    }
+    
+    function toggleSettings() {
+      showView('settings');
+    }
+    
+    function toggleUltimateMode() {
+      ultimateMode = $('ultimateMode').checked;
+      toast(ultimateMode ? '✓ 終極防護已啟用' : '✓ 終極防護已關閉', 2000);
+      
+      if (ultimateMode && tripActive) {
+        startAllProtections();
+      } else if (!ultimateMode && tripActive) {
+        stopAllProtections();
+      }
+      
+      localStorage.setItem('gps_ultimate_mode', ultimateMode.toString());
+    }
+    
+    function toggleProtectionBanner() {
+      // 實作收合橫幅功能
+      const banner = $('protectionBanner');
+      const details = banner.querySelector('.space-y-0\\.5');
+      const btn = banner.querySelector('button span');
+      
+      if (details.style.display === 'none') {
+        details.style.display = 'block';
+        btn.textContent = 'expand_less';
+      } else {
+        details.style.display = 'none';
+        btn.textContent = 'expand_more';
+      }
+    }
+    
+    function showWarning() {
+      $('warningBanner').classList.remove('hidden');
+    }
+    
+    function hideWarning() {
+      $('warningBanner').classList.add('hidden');
+    }
+    
+    function dismissWarning() {
+      hideWarning();
+    }
+    
+    function updateStats() {
+      $('pointCount').textContent = totalPoints;
+      $('lastUpdateTime').textContent = tsFmt(new Date(lastGPSUpdate));
+      $('reconnectCount').textContent = reconnectCount;
+      $('wakeupCount').textContent = wakeupCount;
+      $('autoSaveCount').textContent = `${autoSaveCount} 次`;
+    }
+
+    // ========== 智慧數字縮放系統 ==========
+    function smartScaleNumber(elementId) {
+      const numberEl = $(elementId);
+      if (!numberEl) return;
+      
+      const container = numberEl.parentElement;
+      const unitEl = container.querySelector('.unit');
+      
+      // 獲取容器實際可用寬度
+      const containerWidth = container.clientWidth;
+      const unitWidth = unitEl ? unitEl.offsetWidth : 30;
+      const gap = 4; // 0.25rem
+      const availableWidth = containerWidth - unitWidth - gap - 10; // 減10px padding
+      
+      // 重置為最大字體
+      numberEl.style.fontSize = '3rem'; // 48px
+      
+      // 強制重新計算
+      void numberEl.offsetWidth;
+      
+      // 獲取實際文字寬度
+      const textWidth = numberEl.scrollWidth;
+      
+      if (textWidth > availableWidth) {
+        // 計算縮放比例
+        const scale = availableWidth / textWidth;
+        const baseFontSize = 48;
+        let newFontSize = baseFontSize * scale;
+        
+        // 確保最小字體
+        newFontSize = Math.max(16, newFontSize);
+        
+        numberEl.style.fontSize = newFontSize + 'px';
+        
+        // 更新單位字體（保持比例）
+        if (unitEl) {
+          const unitSize = Math.max(12, newFontSize * 0.4);
+          unitEl.style.fontSize = unitSize + 'px';
+        }
+        
+        console.log(`[縮放] ${elementId}: ${baseFontSize}px → ${newFontSize.toFixed(1)}px (${(scale*100).toFixed(1)}%)`);
+      } else {
+        // 保持原始大小
+        numberEl.style.fontSize = '3rem';
+        if (unitEl) {
+          unitEl.style.fontSize = '1.125rem';
+        }
+      }
+    }
+
+    // ========== GPS 相關 ==========
+    function updateConnectionStatus(status, text) {
+      const statusEl = $('connectionStatus');
+      const icon = $('connectionIcon');
+      const textEl = $('connectionText');
+      
+      const configs = {
+        ok: { icon: 'check_circle', color: 'text-primary', text: text || '正常' },
+        warning: { icon: 'warning', color: 'text-yellow-400', text: text || '不穩' },
+        error: { icon: 'error', color: 'text-red-500', text: text || '中斷' }
+      };
+      
+      const config = configs[status] || configs.ok;
+      icon.textContent = config.icon;
+      icon.className = `material-symbols-outlined ${config.color} text-[16px]`;
+      textEl.className = `text-xs font-bold ${config.color} tracking-wider`;
+      textEl.textContent = config.text;
+    }
+    
+    function updateGPSStatus(status, text) {
+      const statusEl = $('gpsStatus');
+      const icon = statusEl.querySelector('.material-symbols-outlined');
+      const textEl = statusEl.querySelector('span:last-child');
+      
+      const colors = {
+        idle: 'text-neutral-500',
+        active: 'text-primary',
+        error: 'text-red-500'
+      };
+      
+      icon.className = `material-symbols-outlined ${colors[status] || colors.idle} text-[16px]`;
+      textEl.className = `text-xs font-bold ${colors[status] || colors.idle} tracking-wider`;
+      textEl.textContent = text;
+    }
+    
+    function renderCurrentOdo() {
+      const startOdoStr = ($('startOdo').value || '').trim();
+      if (startOdoStr === "") {
+        $('currentOdo').textContent = "—";
+        smartScaleNumber('currentOdo');
+        return;
+      }
+      const startOdo = parseFloat(startOdoStr);
+      if (isNaN(startOdo)) {
+        $('currentOdo').textContent = "—";
+        smartScaleNumber('currentOdo');
+        return;
+      }
+      const current = startOdo + (tripDist / 1000);
+      $('currentOdo').textContent = fmt(current, 3);
+      smartScaleNumber('currentOdo');
+    }
+    
+    function updateUI(pos) {
+      const { latitude: lat, longitude: lng, accuracy: acc, speed } = pos.coords;
+      const cur = { lat, lng };
+      
+      lastGPSUpdate = Date.now();
+      totalPoints++;
+      updateConnectionStatus('ok', '正常');
+      hideWarning();
+      
+      $('acc').textContent = acc ? `${fmt(acc, 0)}m` : '—';
+      $('spd').textContent = speed !== null ? `${fmt(kph(speed), 1)} km/h` : '—';
+      $('ts').textContent = tsFmt(new Date(pos.timestamp));
+      
+      if (map && marker && circle) {
+        marker.setLatLng([lat, lng]);
+        circle.setLatLng([lat, lng]);
+        circle.setRadius(Math.max(acc, 10));
+        
+        if (tripActive) {
+          map.setView([lat, lng], Math.max(map.getZoom(), 15));
+        }
+        
+        const coords = track.getLatLngs();
+        coords.push([lat, lng]);
+        track.setLatLngs(coords);
+        
+        // 更新路徑點數顯示
+        if (tripActive) {
+          $('pathInfoCard').classList.remove('hidden');
+          $('pathPointCount').textContent = coords.length;
+        }
+        
+        if (coords.length > 1000) {
+          track.setLatLngs(coords.slice(-1000));
+        }
+      }
+      
+      if (tripActive && last) {
+        const dist = hav(last, cur);
+        if (dist > 5) {
+          // 套用里程校正係數
+          const coef = parseFloat(localStorage.getItem('distCoef') || '1.10');
+          tripDist += dist * coef;
+          $('tripDist').textContent = fmt(tripDist / 1000, 3);
+          smartScaleNumber('tripDist');
+          renderCurrentOdo();
+        }
+      }
+      
+      last = cur;
+    }
+    
+    function startWatch() {
+      if (!('geolocation' in navigator)) {
+        updateGPSStatus('error', '不支援');
+        toast('此裝置不支援 GPS 定位', 3000);
+        return false;
+      }
+      
+      if (watchId !== null) return true;
+      
+      updateGPSStatus('active', '定位中');
+      
+      try {
+        watchId = navigator.geolocation.watchPosition(
+          (pos) => {
+            updateGPSStatus('active', 'GPS');
+            updateUI(pos);
+          },
+          (err) => {
+            const messages = {
+              1: "權限拒絕",
+              2: "無法定位",
+              3: "逾時"
+            };
+            const msg = messages[err.code] || '錯誤';
+            updateGPSStatus('error', msg);
+            updateConnectionStatus('error', msg);
+            showWarning();
+            
+            if (ultimateMode && tripActive) {
+              setTimeout(() => {
+                reconnectGPS();
+              }, 3000);
+            }
+          },
+          {
+            enableHighAccuracy: true,
+            maximumAge: 1000,
+            timeout: 20000
+          }
+        );
+        
+        lastGPSUpdate = Date.now();
+        return true;
+      } catch (e) {
+        console.error(e);
+        updateGPSStatus('error', '啟動失敗');
+        toast('GPS 啟動失敗', 3000);
+        return false;
+      }
+    }
+    
+    function stopWatch() {
+      if (watchId !== null) {
+        navigator.geolocation.clearWatch(watchId);
+        watchId = null;
+        updateGPSStatus('idle', '待機');
+        updateConnectionStatus('ok', '正常');
+      }
+    }
+
+    // ========== 啟動/停止所有防護 ==========
+    async function startAllProtections() {
+      console.log('🛡️ 啟動終極防護系統...');
+      
+      await startWakeLock();
+      startAudioKeepAlive();
+      startAutoSave();
+      startHealthCheck();
+      startBatteryMonitor();
+      startRunningTimer();
+      
+      $('protectionBanner').classList.remove('hidden');
+      
+      toast('✓ 終極防護系統已啟動', 3000);
+    }
+    
+    async function stopAllProtections() {
+      console.log('🛡️ 停止防護系統...');
+      
+      await stopWakeLock();
+      stopAudioKeepAlive();
+      stopAutoSave();
+      stopHealthCheck();
+      stopRunningTimer();
+      
+      $('protectionBanner').classList.add('hidden');
+    }
+
+    // ========== 主要控制 ==========
+    function updateMainButton(state) {
+      const btn = $('mainBtn');
+      const icon = $('mainBtnIcon');
+      const text = $('mainBtnText');
+      const hint = $('mainBtnHint');
+      
+      if (state === 'start') {
+        btn.className = 'relative flex items-center justify-center w-24 h-24 rounded-full bg-primary text-black shadow-xl shadow-primary/20 active:scale-95 transition-all duration-200 group';
+        icon.textContent = 'play_circle';
+        text.textContent = '開始';
+        hint.textContent = '點擊開始記錄行程';
+        $('ripple1').classList.add('hidden');
+        $('ripple2').classList.add('hidden');
+        $('trackingBadge').classList.add('hidden');
+        $('idleBadge').classList.remove('hidden');
+      } else if (state === 'stop') {
+        btn.className = 'relative flex items-center justify-center w-24 h-24 rounded-full bg-red-600 text-white shadow-xl shadow-red-900/20 active:scale-95 transition-all duration-200 group';
+        icon.textContent = 'stop_circle';
+        text.textContent = '停止';
+        hint.textContent = '點擊停止並記錄行程';
+        $('ripple1').classList.remove('hidden');
+        $('ripple2').classList.remove('hidden');
+        $('trackingBadge').classList.remove('hidden');
+        $('idleBadge').classList.add('hidden');
+      }
+    }
+    
+    function handleMainButton() {
+      if (!tripActive) {
+        tripStart();
+      } else {
+        tripStop();
+      }
+    }
+    
+    async function tripStart() {
+      if (tripActive) {
+        toast('行程已在進行中', 2000);
+        return;
+      }
+      
+      // 檢查是否有備份
+      const backup = loadCurrentTripBackup();
+      if (backup) {
+        if (confirm('偵測到未完成的行程備份，是否恢復？')) {
+          tripStartName = backup.startName;
+          tripEndName = backup.endName;
+          tripStartTime = backup.start;
+          tripDist = backup.km * 1000;
+          totalPoints = backup.points || 0;
+          reconnectCount = backup.reconnects || 0;
+          
+          toast('✓ 已恢復備份行程', 3000);
+        } else {
+          clearCurrentTripBackup();
+        }
+      }
+      
+      if (!startWatch()) {
+        return;
+      }
+      
+      if (!tripStartName) {
+        const startName = requireNonEmpty("請輸入『起點』名稱\n例如：公司、台北車站", "起點");
+        if (startName === null) {
+          if (!tripActive) stopWatch();
+          return;
+        }
+        
+        const endName = requireNonEmpty("請輸入『終點』名稱\n例如：客戶A、桃園機場", "終點");
+        if (endName === null) {
+          if (!tripActive) stopWatch();
+          return;
+        }
+        
+        tripStartName = startName;
+        tripEndName = endName;
+        tripStartTime = new Date();
+      }
+      
+      tripActive = true;
+      if (!tripDist) tripDist = 0;
+      if (!totalPoints) totalPoints = 0;
+      if (!reconnectCount) reconnectCount = 0;
+      autoSaveCount = 0;
+      
+      // 記錄起點位置（用於精算）
+      if (last) {
+        tripStartPos = { lat: last.lat, lng: last.lng };
+      }
+      
+      $('tripDist').textContent = fmt(tripDist / 1000, 3);
+      smartScaleNumber('tripDist');
+      $('tripName').textContent = `${tripStartName} → ${tripEndName}`;
+      renderCurrentOdo();
+      
+      updateMainButton('stop');
+      toast(`✓ 行程已開始：${tripStartName} → ${tripEndName}`, 3000);
+      
+      if (track && !backup) {
+        track.setLatLngs([]);
+        if (last) track.addLatLng([last.lat, last.lng]);
+      }
+      
+      if (ultimateMode) {
+        await startAllProtections();
+      }
+    }
+    
+    async function tripStop() {
+      if (!tripActive) {
+        toast('尚未開始行程', 2000);
+        return;
+      }
+      
+      const endTime = new Date();
+      let km = tripDist / 1000;
+      
+      if (km < 0.01) {
+        if (!confirm('本趟行程里程幾乎為 0，確定要結束嗎？')) {
+          return;
+        }
+      }
+      
+      // 精算道路距離（如果啟用且有網路）
+      const enablePreciseCalc = localStorage.getItem('enablePreciseCalc') === 'true';
+      if (enablePreciseCalc && last && tripActive) {
+        const shouldCalc = confirm('是否使用路線 API 計算精確道路距離？\n（需要網路連線）');
+        if (shouldCalc) {
+          toast('正在計算精確距離...', 5000);
+          try {
+            const preciseKm = await calculateRoadDistance(
+              tripStartPos.lat, tripStartPos.lng,
+              last.lat, last.lng
+            );
+            if (preciseKm > 0) {
+              km = preciseKm;
+              toast(`✓ 精確距離：${km.toFixed(3)} km`, 3000);
+            }
+          } catch (err) {
+            console.error('精算失敗：', err);
+            toast('⚠️ 精算失敗，使用 GPS 距離', 3000);
+          }
+        }
+      }
+      
+      const startOdoStr = ($('startOdo').value || '').trim();
+      const startOdo = startOdoStr === '' ? 0 : parseFloat(startOdoStr);
+      const odoTotal = (isNaN(startOdo) ? 0 : startOdo) + km;
+      
+      // 儲存路徑點（用於顯示路線）
+      const routePoints = track ? track.getLatLngs().map(p => [p.lat, p.lng]) : [];
+      
+      trips.push({
+        startName: tripStartName,
+        endName: tripEndName,
+        start: tsFmt(tripStartTime),
+        end: tsFmt(endTime),
+        km: km,
+        odoTotal: odoTotal,
+        title: tripTitle(tripStartName, tripEndName),
+        points: totalPoints,
+        reconnects: reconnectCount,
+        route: routePoints // 新增：儲存路徑
+      });
+      
+      saveTripsToStorage();
+      clearCurrentTripBackup();
+      
+      tripActive = false;
+      tripDist = 0;
+      tripStartTime = null;
+      tripStartName = "";
+      tripEndName = "";
+      totalPoints = 0;
+      reconnectCount = 0;
+      autoSaveCount = 0;
+      
+      $('tripDist').textContent = '0.000';
+      smartScaleNumber('tripDist');
+      $('tripName').textContent = '等待開始';
+      renderCurrentOdo();
+      hideWarning();
+      
+      stopWatch();
+      await stopAllProtections();
+      
+      updateMainButton('start');
+      
+      // 隱藏路徑資訊卡片
+      $('pathInfoCard').classList.add('hidden');
+      
+      const summary = `✓ 行程已記錄\n里程：${km.toFixed(2)} km\n定位點：${totalPoints}\n重連次數：${reconnectCount}`;
+      toast(summary, 4000);
+    }
+
+    // ========== 測試功能 ==========
+    async function testGPS() {
+      toast('正在測試 GPS...', 3000);
+      
+      if (!('geolocation' in navigator)) {
+        toast('❌ 此裝置不支援 GPS', 3000);
+        return;
+      }
+      
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const acc = pos.coords.accuracy;
+          const quality = acc < 10 ? '極佳' : acc < 20 ? '良好' : acc < 50 ? '尚可' : '不佳';
+          toast(`✓ GPS 正常 | 精確度：${acc.toFixed(0)}m (${quality})`, 4000);
+        },
+        (err) => {
+          const msgs = { 1: '請允許位置權限', 2: '無法取得位置', 3: '定位逾時' };
+          toast(`❌ ${msgs[err.code] || '測試失敗'}`, 3000);
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
+      );
+    }
+    
+    async function testProtections() {
+      toast('正在測試防護系統...', 3000);
+      
+      const results = [];
+      
+      // 測試 Wake Lock
+      if ('wakeLock' in navigator) {
+        results.push('✓ Wake Lock 支援');
+      } else {
+        results.push('✗ Wake Lock 不支援');
+      }
+      
+      // 測試音頻
+      if (silentAudio) {
+        results.push('✓ 靜音音頻可用');
+      } else {
+        results.push('✗ 靜音音頻不可用');
+      }
+      
+      // 測試 LocalStorage
+      try {
+        localStorage.setItem('test', 'test');
+        localStorage.removeItem('test');
+        results.push('✓ LocalStorage 可用');
+      } catch (e) {
+        results.push('✗ LocalStorage 不可用');
+      }
+      
+      // 測試電池 API
+      if ('getBattery' in navigator) {
+        results.push('✓ 電池監控支援');
+      } else {
+        results.push('✗ 電池監控不支援');
+      }
+      
+      // 測試頁面可見性 API
+      if ('visibilityState' in document) {
+        results.push('✓ 頁面可見性 API 支援');
+      } else {
+        results.push('✗ 頁面可見性 API 不支援');
+      }
+      
+      setTimeout(() => {
+        alert('防護系統測試結果：\n\n' + results.join('\n'));
+      }, 500);
+    }
+    
+    function forceBackup() {
+      if (!tripActive) {
+        toast('目前沒有進行中的行程', 2000);
+        return;
+      }
+      
+      if (saveCurrentTrip()) {
+        toast('✓ 備份成功', 2000);
+      } else {
+        toast('✗ 備份失敗', 2000);
+      }
+    }
+
+    // ========== 歷史記錄 ==========
+    function renderTrips() {
+      const list = $('tripList');
+      list.innerHTML = '';
+      
+      $('tripCount').textContent = `共 ${trips.length} 筆`;
+      
+      if (trips.length === 0) {
+        list.innerHTML = `
+          <div class="text-center py-12 text-neutral-500">
+            <span class="material-symbols-outlined text-[48px] opacity-30">folder_open</span>
+            <p class="mt-2">尚無行程記錄</p>
+            <p class="text-xs mt-1">開始記錄後會顯示在這裡</p>
+          </div>
+        `;
+      } else {
+        trips.forEach((t, i) => {
+          const card = document.createElement('div');
+          card.className = 'bg-surface-dark rounded-2xl p-4 border border-white/5';
+          card.innerHTML = `
+            <div class="flex items-start justify-between mb-3">
+              <div class="flex-1">
+                <h3 class="font-bold text-white text-lg mb-1">${t.title}</h3>
+                <p class="text-sm text-neutral-400">${t.start} - ${t.end}</p>
+                ${t.reconnects > 0 ? `<p class="text-xs text-yellow-400 mt-1">⚠️ GPS 重連 ${t.reconnects} 次 | 定位點：${t.points}</p>` : `<p class="text-xs text-primary mt-1">✓ 穩定記錄 | 定位點：${t.points}</p>`}
+              </div>
+              <button onclick="deleteTrip(${i})" class="text-red-500 hover:text-red-400 transition-colors">
+                <span class="material-symbols-outlined">delete</span>
+              </button>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="bg-background-dark rounded-lg p-3">
+                <p class="text-xs text-neutral-400 mb-1">里程</p>
+                <p class="text-lg font-bold text-primary">${t.km.toFixed(3)} km</p>
+              </div>
+              <div class="bg-background-dark rounded-lg p-3">
+                <p class="text-xs text-neutral-400 mb-1">累積</p>
+                <p class="text-lg font-bold text-white">${t.odoTotal.toFixed(3)} km</p>
+              </div>
+            </div>
+            <div class="mt-3 flex gap-2">
+              <button onclick="renameTrip('start',${i})" class="flex-1 text-xs py-2 px-3 bg-white/5 hover:bg-white/10 text-neutral-300 rounded-lg transition-colors">
+                改起點
+              </button>
+              <button onclick="renameTrip('end',${i})" class="flex-1 text-xs py-2 px-3 bg-white/5 hover:bg-white/10 text-neutral-300 rounded-lg transition-colors">
+                改終點
+              </button>
+            </div>
+          `;
+          list.appendChild(card);
+        });
+      }
+    }
+    
+    function renameTrip(which, idx) {
+      const t = trips[idx];
+      const label = which === 'start' ? "起點名稱" : "終點名稱";
+      const cur = which === 'start' ? t.startName : t.endName;
+      const v = requireNonEmpty(`修改${label}`, cur || "");
+      if (v === null) return;
+      
+      if (which === 'start') {
+        t.startName = v;
+      } else {
+        t.endName = v;
+      }
+      t.title = tripTitle(t.startName, t.endName);
+      renderTrips();
+      saveTripsToStorage();
+      toast('✓ 已更新', 1500);
+    }
+    
+    function deleteTrip(idx) {
+      const t = trips[idx];
+      if (!confirm(`確定要刪除行程「${t.title}」嗎？`)) return;
+      trips.splice(idx, 1);
+      renderTrips();
+      saveTripsToStorage();
+      toast('✓ 已刪除', 1500);
+    }
+    
+    // ========== 路線顯示 ==========
+    let routeMapInstance = null;
+    let routePolyline = null;
+    
+    function showRoute(idx) {
+      const trip = trips[idx];
+      if (!trip.route || trip.route.length === 0) {
+        toast('此行程無路線資料', 2000);
+        return;
+      }
+      
+      // 顯示彈窗
+      $('routeModal').classList.remove('hidden');
+      
+      // 設定標題和資訊
+      $('routeModalTitle').textContent = trip.title;
+      $('routeModalSubtitle').textContent = `${trip.start} - ${trip.end}`;
+      $('routeStartName').textContent = trip.startName;
+      $('routeEndName').textContent = trip.endName;
+      $('routeDistance').textContent = `${trip.km.toFixed(3)} km`;
+      $('routePoints').textContent = `${trip.points || trip.route.length} 點`;
+      
+      // 初始化地圖
+      setTimeout(() => {
+        initRouteMap(trip.route);
+      }, 100);
+    }
+    
+    function initRouteMap(routePoints) {
+      // 清除舊地圖
+      if (routeMapInstance) {
+        routeMapInstance.remove();
+        routeMapInstance = null;
+      }
+      
+      // 計算中心點
+      const lats = routePoints.map(p => p[0]);
+      const lngs = routePoints.map(p => p[1]);
+      const centerLat = (Math.min(...lats) + Math.max(...lats)) / 2;
+      const centerLng = (Math.min(...lngs) + Math.max(...lngs)) / 2;
+      
+      // 創建地圖
+      routeMapInstance = L.map('routeMap', {
+        center: [centerLat, centerLng],
+        zoom: 13,
+        zoomControl: true
+      });
+      
+      // 添加圖層
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap',
+        maxZoom: 19
+      }).addTo(routeMapInstance);
+      
+      // 畫路線
+      routePolyline = L.polyline(routePoints, {
+        color: '#13ec5b',
+        weight: 4,
+        opacity: 0.8,
+        smoothFactor: 1
+      }).addTo(routeMapInstance);
+      
+      // 標記起點和終點
+      if (routePoints.length > 0) {
+        const startPoint = routePoints[0];
+        const endPoint = routePoints[routePoints.length - 1];
+        
+        // 起點標記（綠色）
+        L.marker(startPoint, {
+          icon: L.divIcon({
+            className: 'custom-marker',
+            html: `<div style="background: #13ec5b; width: 32px; height: 32px; border-radius: 50%; border: 3px solid white; display: flex; align-items: center; justify-center; box-shadow: 0 2px 8px rgba(0,0,0,0.3);"><span style="color: #102216; font-size: 20px;">▶</span></div>`,
+            iconSize: [32, 32],
+            iconAnchor: [16, 16]
+          })
+        }).addTo(routeMapInstance);
+        
+        // 終點標記（紅色）
+        L.marker(endPoint, {
+          icon: L.divIcon({
+            className: 'custom-marker',
+            html: `<div style="background: #ef4444; width: 32px; height: 32px; border-radius: 50%; border: 3px solid white; display: flex; align-items: center; justify-center; box-shadow: 0 2px 8px rgba(0,0,0,0.3);"><span style="color: white; font-size: 20px;">⬛</span></div>`,
+            iconSize: [32, 32],
+            iconAnchor: [16, 16]
+          })
+        }).addTo(routeMapInstance);
+      }
+      
+      // 自動調整視野以顯示完整路線
+      routeMapInstance.fitBounds(routePolyline.getBounds(), {
+        padding: [50, 50]
+      });
+    }
+    
+    function closeRouteModal() {
+      $('routeModal').classList.add('hidden');
+      if (routeMapInstance) {
+        routeMapInstance.remove();
+        routeMapInstance = null;
+      }
+    }
+
+    // ========== Excel 匯出 ==========
+    function exportXLSX() {
+      if (trips.length === 0) {
+        toast('沒有行程可匯出', 2000);
+        return;
+      }
+      
+      const driver = $('driver').value || '';
+      const plate = $('plate').value || '';
+      const person = $('personName').value || '';
+      const startOdoStr = ($('startOdo').value || '').trim();
+      const baseStartOdo = startOdoStr === '' ? 0 : parseFloat(startOdoStr);
+      
+      const headers = [
+        '行程名稱', '啟程地點', '停止地點', '起程時間', '到達時間',
+        '啟程公里數', '到達公里數', '小計里程數', '駕駛人', '車牌', '申請人', '定位點數', 'GPS重連次數'
+      ];
+      
+      let accumulatedKm = isNaN(baseStartOdo) ? 0 : baseStartOdo;
+      
+      const rows = trips.map(t => {
+        const tripKm = Number(t.km || 0);
+        const startKm = accumulatedKm;
+        const endKm = startKm + tripKm;
+        accumulatedKm = endKm;
+        
+        return [
+          t.title || '', t.startName || '', t.endName || '',
+          t.start || '', t.end || '',
+          Number(startKm.toFixed(3)), Number(endKm.toFixed(3)), Number(tripKm.toFixed(3)),
+          driver, plate, person, t.points || 0, t.reconnects || 0
+        ];
+      });
+      
+      const data = [headers, ...rows];
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.aoa_to_sheet(data);
+      
+      ws['!freeze'] = { xSplit: 0, ySplit: 1, topLeftCell: 'A2', activePane: 'bottomLeft', state: 'frozen' };
+      ws['!cols'] = [
+        { wch: 20 }, { wch: 16 }, { wch: 16 }, { wch: 18 }, { wch: 18 },
+        { wch: 14 }, { wch: 14 }, { wch: 14 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 10 }, { wch: 12 }
+      ];
+      
+      XLSX.utils.book_append_sheet(wb, ws, '行程記錄');
+      
+      // 第二個工作表：路徑座標
+      const routeHeaders = ['行程編號', '行程名稱', '點序號', '緯度', '經度', 'Google Maps 連結'];
+      const routeRows = [];
+      
+      trips.forEach((trip, tripIdx) => {
+        if (trip.route && trip.route.length > 0) {
+          trip.route.forEach((point, pointIdx) => {
+            const lat = point[0];
+            const lng = point[1];
+            const googleMapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+            
+            routeRows.push([
+              tripIdx + 1,
+              trip.title || '',
+              pointIdx + 1,
+              Number(lat.toFixed(6)),
+              Number(lng.toFixed(6)),
+              googleMapsUrl
+            ]);
+          });
+        }
+      });
+      
+      if (routeRows.length > 0) {
+        const routeData = [routeHeaders, ...routeRows];
+        const wsRoute = XLSX.utils.aoa_to_sheet(routeData);
+        
+        wsRoute['!freeze'] = { xSplit: 0, ySplit: 1, topLeftCell: 'A2', activePane: 'bottomLeft', state: 'frozen' };
+        wsRoute['!cols'] = [
+          { wch: 10 }, { wch: 20 }, { wch: 10 }, { wch: 12 }, { wch: 12 }, { wch: 50 }
+        ];
+        
+        XLSX.utils.book_append_sheet(wb, wsRoute, '路徑座標');
+      }
+      
+      const filename = `GPS行程記錄_終極版_${new Date().toISOString().split('T')[0]}.xlsx`;
+      XLSX.writeFile(wb, filename);
+      toast('✓ Excel 已匯出（含路徑座標）', 2500);
+    }
+
+    // ========== 資料持久化 ==========
+    const STORAGE_KEYS = {
+      plate: 'gps_plate',
+      driver: 'gps_driver',
+      personName: 'gps_personName',
+      startOdo: 'gps_startOdo',
+      trips: 'gps_trips_v5_ultimate',
+      ultimateMode: 'gps_ultimate_mode'
+    };
+    
+    function saveMeta() {
+      try {
+        localStorage.setItem(STORAGE_KEYS.plate, $('plate').value || '');
+        localStorage.setItem(STORAGE_KEYS.driver, $('driver').value || '');
+        localStorage.setItem(STORAGE_KEYS.personName, $('personName').value || '');
+        localStorage.setItem(STORAGE_KEYS.startOdo, $('startOdo').value || '');
+        localStorage.setItem('distCoef', $('distCoef').value || '1.10');
+        localStorage.setItem('enablePreciseCalc', $('enablePreciseCalc').checked ? 'true' : 'false');
+        renderCurrentOdo();
+      } catch (e) {
+        console.error('儲存失敗：', e);
+      }
+    }
+    
+    function loadMeta() {
+      try {
+        $('plate').value = localStorage.getItem(STORAGE_KEYS.plate) || '';
+        $('driver').value = localStorage.getItem(STORAGE_KEYS.driver) || '';
+        $('personName').value = localStorage.getItem(STORAGE_KEYS.personName) || '';
+        $('startOdo').value = localStorage.getItem(STORAGE_KEYS.startOdo) || '';
+        $('distCoef').value = localStorage.getItem('distCoef') || '1.10';
+        $('enablePreciseCalc').checked = localStorage.getItem('enablePreciseCalc') === 'true';
+        
+        const savedMode = localStorage.getItem(STORAGE_KEYS.ultimateMode);
+        if (savedMode !== null) {
+          ultimateMode = savedMode === 'true';
+          $('ultimateMode').checked = ultimateMode;
+        }
+        
+        renderCurrentOdo();
+      } catch (e) {
+        console.error('讀取失敗：', e);
+      }
+    }
+    
+    function saveTripsToStorage() {
+      try {
+        localStorage.setItem(STORAGE_KEYS.trips, JSON.stringify(trips));
+        localStorage.setItem(STORAGE_KEYS.ultimateMode, ultimateMode.toString());
+      } catch (e) {
+        console.error('儲存行程失敗：', e);
+      }
+    }
+    
+    function loadTripsFromStorage() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEYS.trips);
+        if (saved) {
+          trips = JSON.parse(saved);
+        }
+      } catch (e) {
+        console.error('讀取行程失敗：', e);
+      }
+    }
+    
+    async function resetAll() {
+      if (!confirm('⚠️ 確定要清除所有記錄嗎？\n\n此操作將刪除所有行程記錄\n基本資料不會被清除\n\n此操作無法復原！')) {
+        return;
+      }
+      
+      trips = [];
+      renderTrips();
+      
+      tripActive = false;
+      tripDist = 0;
+      tripStartTime = null;
+      tripStartName = "";
+      tripEndName = "";
+      totalPoints = 0;
+      reconnectCount = 0;
+      wakeupCount = 0;
+      autoSaveCount = 0;
+      
+      $('tripDist').textContent = '0.000';
+      smartScaleNumber('tripDist');
+      $('tripName').textContent = '等待開始';
+      renderCurrentOdo();
+      last = null;
+      
+      if (track) track.setLatLngs([]);
+      
+      await stopAllProtections();
+      clearCurrentTripBackup();
+      
+      saveTripsToStorage();
+      updateMainButton('start');
+      updateStats();
+      
+      toast('✓ 所有記錄已清除', 2000);
+    }
+
+    // ========== 地圖初始化 ==========
+    function initMap() {
+      try {
+        map = L.map('map', {
+          zoomControl: false,
+          attributionControl: false,
+          dragging: false,
+          touchZoom: false,
+          doubleClickZoom: false,
+          scrollWheelZoom: false,
+          boxZoom: false,
+          keyboard: false,
+        });
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19
+        }).addTo(map);
+        
+        map.setView([25.0330, 121.5654], 13);
+        
+        marker = L.marker([25.0330, 121.5654], {
+          icon: L.divIcon({
+            className: 'custom-marker',
+            html: '<div style="background:#13ec5b;width:20px;height:20px;border-radius:50%;border:4px solid white;box-shadow:0 0 12px rgba(19,236,91,0.6)"></div>',
+            iconSize: [28, 28],
+            iconAnchor: [14, 14]
+          })
+        }).addTo(map);
+        
+        circle = L.circle([25.0330, 121.5654], {
+          color: '#13ec5b',
+          fillColor: '#13ec5b',
+          fillOpacity: 0.1,
+          radius: 50
+        }).addTo(map);
+        
+        track = L.polyline([], {
+          color: '#13ec5b',
+          weight: 5,
+          opacity: 0.9,
+          smoothFactor: 1.5,
+          lineJoin: 'round',
+          lineCap: 'round'
+        }).addTo(map);
+        
+      } catch (e) {
+        console.error('地圖初始化失敗：', e);
+        toast('地圖初始化失敗', 3000);
+      }
+    }
+
+    // ========== 初始化 ==========
+    window.addEventListener('load', async () => {
+      initMap();
+      loadMeta();
+      loadTripsFromStorage();
+      updateMainButton('start');
+      updateStats();
+      
+      // 初始化數字縮放
+      smartScaleNumber('tripDist');
+      smartScaleNumber('currentOdo');
+      
+      ['plate', 'driver', 'personName', 'startOdo'].forEach(id =>
+        $(id).addEventListener('input', saveMeta)
+      );
+      
+      // 檢查備份
+      const backup = loadCurrentTripBackup();
+      if (backup && !tripActive) {
+        toast('⚠️ 偵測到未完成的行程備份', 3000);
+      }
+      
+      console.log('🚗 GPS油單輔助系統 v1.0.0 已就緒');
+      console.log('🛡️ 防護系統：Wake Lock + 音頻保活 + 自動備份 + GPS 監控');
+    });
+    
+    window.addEventListener('beforeunload', (e) => {
+      if (tripActive) {
+        saveCurrentTrip(); // 最後備份
+        e.preventDefault();
+        e.returnValue = '您有進行中的行程尚未結束，確定要離開嗎？';
+      }
+    });
+  </script>
+
+  <!-- 路線顯示彈窗 -->
+  <div id="routeModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+    <div class="bg-surface-dark rounded-3xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden border border-white/10 shadow-2xl">
+      <!-- 標題列 -->
+      <div class="flex items-center justify-between p-6 border-b border-white/10">
+        <div class="flex-1">
+          <h3 id="routeModalTitle" class="text-xl font-bold text-white">行程路線</h3>
+          <p id="routeModalSubtitle" class="text-sm text-neutral-400 mt-1"></p>
+        </div>
+        <button onclick="closeRouteModal()" class="text-neutral-400 hover:text-white transition-colors">
+          <span class="material-symbols-outlined text-[28px]">close</span>
+        </button>
+      </div>
+      
+      <!-- 地圖區域 -->
+      <div class="flex-1 relative overflow-hidden">
+        <div id="routeMap" class="w-full h-full min-h-[400px]"></div>
+      </div>
+      
+      <!-- 資訊列 -->
+      <div id="routeInfo" class="p-6 border-t border-white/10 bg-background-dark/50">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div>
+            <p class="text-xs text-neutral-400 mb-1">起點</p>
+            <p id="routeStartName" class="text-sm font-semibold text-white"></p>
+          </div>
+          <div>
+            <p class="text-xs text-neutral-400 mb-1">終點</p>
+            <p id="routeEndName" class="text-sm font-semibold text-white"></p>
+          </div>
+          <div>
+            <p class="text-xs text-neutral-400 mb-1">里程</p>
+            <p id="routeDistance" class="text-sm font-semibold text-primary"></p>
+          </div>
+          <div>
+            <p class="text-xs text-neutral-400 mb-1">定位點</p>
+            <p id="routePoints" class="text-sm font-semibold text-white"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
